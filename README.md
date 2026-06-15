@@ -136,8 +136,7 @@ This 4-step pipeline replaces the previous 6-step one (RFantibody → ProteinMPN
 ## Screening and Further Validation of *de novo* designed nanobody binders
 
 Further steps of validation are crucial for increasing the likelihood of success in experimental settings, both *in vitro* and *in vivo*.
-In order to have a sufficient n° of designs for a successful experimental screening, it is advisable to generate at least **≈1000** *in silico* designs (full-atom structure) and use them as input to pass further validation and filtering steps, as these will likely result in 95% of designs to fail leaving your computer.
-These steps may use one or more of the following (the list of options for each approach is not comprehensive, it is just for giving some examples):
+For a real campaign you would generate at least **>10,000** *in silico* designs (full-atom structures) and filter them hard — expect **>98%** of them to fail *in silico*! This is the reason why such methods require dedicated hardware more than deep knowledge of deep-learning methods. Moreover, the most limiting step is finding methods for improving the success rate after experimental validation. This is usually done by combining several orthogonal lines of evidence, despite the fact that no single or combined approach has been demonstrated to systematically improve the success rate on any application (the list below is not comprehensive, just some examples):
 
 *   **Interaction confidence from deep learning approaches**
     *   Use AlphaFold2 (AF2), AlphaFold-Multimer or AF3 to repredict the complex without the use of templates and evaluate the models for consistency with the design structure and flexibility-sensitive confidence scores (e.g, [Local Interaction Score](https://github.com/flyark/AFM-LIS) or [ipSAE](https://doi.org/10.1101/2025.02.10.637595))
