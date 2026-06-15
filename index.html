@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>De Novo Nanobody Design — Interactive Workflow</title>
+<meta name="description" content="A guided, mobile-friendly Google Colab workflow for the de novo (re)design of nanobodies against a target antigen: IgGM + PIPPack + AntiFold + ESMFold.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070b14; --bg2:#0c1424; --card:rgba(255,255,255,.045); --card-bd:rgba(255,255,255,.10);
+  --text:#eaf0fb; --muted:#9fb0c9; --accent:#5db4ff; --accent2:#7c5cff; --good:#46d6a0;
+  --radius:18px; --maxw:1080px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif; color:var(--text);
+  background:radial-gradient(1200px 700px at 80% -10%, #16233f 0%, transparent 60%), var(--bg);
+  line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent); text-decoration:none}
+h1,h2,h3{font-family:'Outfit',sans-serif; line-height:1.15; letter-spacing:-.02em}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px}
+
+/* nav */
+nav{position:sticky; top:0; z-index:50; backdrop-filter:blur(12px);
+  background:rgba(7,11,20,.62); border-bottom:1px solid var(--card-bd)}
+nav .wrap{display:flex; align-items:center; gap:18px; height:60px}
+nav .brand{font-family:'Outfit'; font-weight:800; font-size:1.05rem}
+nav .links{margin-left:auto; display:flex; gap:20px; flex-wrap:wrap}
+nav .links a{color:var(--muted); font-weight:600; font-size:.92rem}
+nav .links a:hover{color:var(--text)}
+@media(max-width:680px){nav .links{display:none}}
+
+/* hero */
+.hero{position:relative; min-height:72vh; display:flex; align-items:center;
+  background:url('Images/Background.png') center 35%/cover no-repeat; overflow:hidden}
+.hero::after{content:""; position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(7,11,20,.55) 0%, rgba(7,11,20,.78) 60%, var(--bg) 100%)}
+.hero .wrap{position:relative; z-index:2; padding:90px 22px}
+.eyebrow{display:inline-block; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  font-size:.72rem; color:var(--accent); background:rgba(93,180,255,.12);
+  border:1px solid rgba(93,180,255,.3); padding:6px 12px; border-radius:999px}
+.hero h1{font-size:clamp(2.2rem,6vw,4rem); font-weight:800; margin:18px 0 14px}
+.hero h1 em{font-style:italic; background:linear-gradient(90deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text; background-clip:text; color:transparent}
+.hero p{max-width:680px; color:#d7e1f2; font-size:1.1rem}
+.cta{display:flex; gap:14px; flex-wrap:wrap; margin-top:28px}
+.btn{display:inline-flex; align-items:center; gap:9px; font-weight:700; font-family:'Outfit';
+  padding:13px 22px; border-radius:12px; border:1px solid transparent; transition:.18s; font-size:.98rem}
+.btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#fff}
+.btn-primary:hover{transform:translateY(-2px); box-shadow:0 10px 30px rgba(93,140,255,.35)}
+.btn-ghost{background:var(--card); border-color:var(--card-bd); color:var(--text)}
+.btn-ghost:hover{border-color:var(--accent)}
+
+/* sections */
+section{padding:74px 0}
+.section-head{max-width:720px; margin-bottom:34px}
+.section-head .eyebrow{margin-bottom:14px}
+.section-head h2{font-size:clamp(1.6rem,4vw,2.4rem); font-weight:800}
+.section-head p{color:var(--muted); margin-top:10px; font-size:1.05rem}
+.lead{color:#cfdaee}
+
+/* inputs strip */
+.inputs{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+@media(max-width:680px){.inputs{grid-template-columns:1fr}}
+.input-card{background:var(--card); border:1px solid var(--card-bd); border-radius:var(--radius); padding:22px}
+.input-card h3{font-size:1.1rem}
+.input-card .tag{font-size:.78rem; color:var(--good); font-weight:700}
+.input-card p{color:var(--muted); margin:8px 0 14px; font-size:.94rem}
+
+/* steps */
+.steps{display:flex; flex-direction:column; gap:26px}
+.step{display:grid; grid-template-columns:64px 1fr; gap:22px; align-items:start;
+  background:var(--card); border:1px solid var(--card-bd); border-radius:var(--radius);
+  padding:26px; position:relative; overflow:hidden}
+.step::before{content:""; position:absolute; left:0; top:0; bottom:0; width:4px;
+  background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.step .num{font-family:'Outfit'; font-weight:800; font-size:1.5rem; width:56px; height:56px;
+  display:flex; align-items:center; justify-content:center; border-radius:14px;
+  background:linear-gradient(135deg,rgba(93,180,255,.18),rgba(124,92,255,.18));
+  border:1px solid var(--card-bd); color:var(--accent)}
+.step h3{font-size:1.3rem}
+.engine{display:inline-block; font-size:.72rem; font-weight:700; letter-spacing:.05em;
+  color:var(--accent2); background:rgba(124,92,255,.13); border:1px solid rgba(124,92,255,.3);
+  padding:4px 10px; border-radius:999px; margin:8px 0 12px}
+.step p{color:var(--muted); font-size:.96rem}
+.step ul{color:var(--muted); font-size:.93rem; margin:10px 0 0 18px}
+.step ul li{margin:4px 0}
+.step-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; align-items:center}
+.colab-badge img{height:30px; display:block}
+.dl{font-size:.84rem; font-weight:600; color:var(--muted); background:rgba(255,255,255,.05);
+  border:1px solid var(--card-bd); padding:6px 11px; border-radius:8px}
+.dl:hover{color:var(--text); border-color:var(--accent)}
+.dl .fx{color:#e0a64a; font-size:.72rem; font-weight:700}
+@media(max-width:560px){.step{grid-template-columns:1fr} .step .num{margin-bottom:-8px}}
+
+/* mobile note */
+.note{display:flex; gap:16px; align-items:flex-start; background:linear-gradient(120deg,rgba(70,214,160,.10),rgba(93,180,255,.08));
+  border:1px solid rgba(70,214,160,.28); border-radius:var(--radius); padding:22px}
+.note .ico{font-size:1.6rem}
+.note h3{font-size:1.15rem; margin-bottom:4px}
+.note p{color:var(--muted); font-size:.95rem}
+
+/* validation list */
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+@media(max-width:680px){.grid2{grid-template-columns:1fr}}
+.vcard{background:var(--card); border:1px solid var(--card-bd); border-radius:var(--radius); padding:20px}
+.vcard h3{font-size:1.02rem; color:var(--accent)}
+.vcard ul{color:var(--muted); font-size:.9rem; margin:10px 0 0 18px}
+.vcard ul li{margin:4px 0}
+
+footer{border-top:1px solid var(--card-bd); padding:46px 0; color:var(--muted); font-size:.92rem}
+footer a{font-weight:600}
+.divider{height:1px; background:var(--card-bd); margin:0}
+.muted{color:var(--muted)}
+.src{font-size:.74rem; color:#6f7f99}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <span class="brand">🧬 De Novo Nanobody Design</span>
+    <div class="links">
+      <a href="#inputs">Inputs</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#validation">Validation</a>
+      <a href="https://github.com/biochorl/Nanobody_de_novo_design">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Google Colab · teaching workflow</span>
+    <h1><em>De Novo</em> Nanobody Design</h1>
+    <p>A guided, mobile-friendly pipeline to (re)design a nanobody against a target antigen — from epitope to a validated, full-atom complex — in four Google Colab notebooks. No local setup required.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#workflow">Start the workflow →</a>
+      <a class="btn btn-ghost" href="./Misc/De-novo_design_intro.pdf">Intro to AI design (PDF)</a>
+    </div>
+  </div>
+</header>
+
+<section id="intro">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">About</span>
+      <h2>From a target structure to a designed binder</h2>
+      <p class="lead">This material was used during the <strong>Nanobody Workshop (22–26 Sep 2025)</strong> at the University of Nova Gorica. It is built for teaching and demonstration on free Colab GPUs — adequate to learn the concepts, not to scale a production screening.</p>
+    </div>
+    <div class="note">
+      <div class="ico">📱</div>
+      <div>
+        <h3>Runs on your phone</h3>
+        <p>Every notebook has a <strong>“Mobile mode”</strong> switch at the very top. Turn it on and all the input files for that step are downloaded automatically from this repository — so you can follow the whole workflow from Google Colab without any local file system.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="inputs">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Step 0 · Inputs</span>
+      <h2>Target & nanobody scaffold</h2>
+      <p>You only need two PDB structures to start. Examples are provided.</p>
+    </div>
+    <div class="inputs">
+      <div class="input-card">
+        <span class="tag">TARGET ANTIGEN</span>
+        <h3>Protein of interest (PDB)</h3>
+        <p>Any structure you want the nanobody to bind. Example: SARS-CoV-2 RBD.</p>
+        <a class="dl" href="./Example_input/7z1b.pdb">⬇ 7z1b.pdb</a>
+      </div>
+      <div class="input-card">
+        <span class="tag">NANOBODY SCAFFOLD</span>
+        <h3>Starting nanobody (PDB)</h3>
+        <p>A pre-selected VHH framework used as the starting point for the redesign.</p>
+        <a class="dl" href="./Example_input/nanobody_scaffold.pdb">⬇ nanobody_scaffold.pdb</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="workflow">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">The pipeline</span>
+      <h2>Four steps, four notebooks</h2>
+      <p>Run them in order. Each opens in Google Colab and produces the inputs for the next.</p>
+    </div>
+    <div class="steps">
+
+      <article class="step">
+        <div class="num">1</div>
+        <div>
+          <h3>Epitope prediction & CDR identification</h3>
+          <span class="engine">DiscoTope-3.0 · Nanocdr-X</span>
+          <p>Prepare everything IgGM needs: predict B-cell epitope hotspots on the antigen and mask the nanobody CDRs to redesign.</p>
+          <ul>
+            <li>DiscoTope-3.0 epitope hotspots → 0-based indices for IgGM</li>
+            <li>Builds <code>IgGM_input.fasta</code> (CDRs = <code>X</code>) and <code>antigen_A.pdb</code></li>
+          </ul>
+          <div class="step-actions">
+            <a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/1_Preparation_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
+            <a class="dl" href="./Example_output/Step_1_annotations.txt">⬇ annotations</a>
+            <a class="dl" href="./Example_output/IgGM_input.fasta">⬇ IgGM_input.fasta <span class="fx">facsimile</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="num">2</div>
+        <div>
+          <h3>De novo CDR design & side-chain refinement</h3>
+          <span class="engine">IgGM · PIPPack</span>
+          <p>IgGM co-designs the sequence <em>and</em> structure of the CDRs against the antigen — a full all-atom complex — then PIPPack repacks the side chains in the antigen context. Replaces the old RFantibody + ProteinMPNN + PIPPack chain.</p>
+          <ul>
+            <li>Optional random sampling of CDR3 length per design</li>
+            <li>Exports <code>cdrs_annotation.json</code> with the exact CDR mask of each design</li>
+          </ul>
+          <div class="step-actions">
+            <a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/2_IgGM_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
+            <a class="dl" href="./Example_output/Nanobody_Design_0.pdb">⬇ refined complex <span class="fx">facsimile</span></a>
+            <a class="dl" href="./Example_output/cdrs_annotation.json">⬇ cdrs_annotation.json <span class="fx">facsimile</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="num">3</div>
+        <div>
+          <h3>CDR sequence optimization (in complex context)</h3>
+          <span class="engine">AntiFold</span>
+          <p>Re-design the CDR sequences with a CDR-specialized inverse-folding model, with the antigen frozen as structural context. Uses the per-design CDR mask, so only the variable-length CDRs are touched.</p>
+          <div class="step-actions">
+            <a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/3_Antifold_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
+            <a class="dl" href="./Example_output/design_3_score_0.4623.fasta">⬇ best design FASTA</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="num">4</div>
+        <div>
+          <h3>Blind validation by structure prediction</h3>
+          <span class="engine">ESMFold2 · BioHub</span>
+          <p>Fold the redesigned complex sequence from scratch (no design coordinates as a guide), align it to the design for an RMSD, and report pLDDT / pTM / <strong>ipTM</strong> — the key interface confidence metric.</p>
+          <div class="step-actions">
+            <a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/4_ESMFold_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
+            <a class="dl" href="./Example_output/Nanobody_Design_0_esmfold2.cif">⬇ refolded .cif <span class="fx">facsimile</span></a>
+            <a class="dl" href="./Example_output/Nanobody_Design_0_metrics.json">⬇ metrics.json <span class="fx">facsimile</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section id="validation">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Beyond the tutorial</span>
+      <h2>Screening & further validation</h2>
+      <p>For real campaigns, generate ≈1000 designs and filter hard — most will fail. Some directions:</p>
+    </div>
+    <div class="grid2">
+      <div class="vcard">
+        <h3>Deep-learning interaction confidence</h3>
+        <ul>
+          <li>AF2 / AF-Multimer / AF3 reprediction (no template)</li>
+          <li>Local Interaction Score, ipSAE</li>
+        </ul>
+      </div>
+      <div class="vcard">
+        <h3>Empirical / physics scores</h3>
+        <ul>
+          <li>Docking: HADDOCK, Rosetta-ddG, Fold-X</li>
+          <li>Interface geometry: dG/dSASA, packstat, unsatisfied H-bonds</li>
+        </ul>
+      </div>
+      <div class="vcard">
+        <h3>Physics-based assessment</h3>
+        <ul>
+          <li>MD simulations (&gt;100 ns) for stability</li>
+          <li>Enhanced sampling (metadynamics / PLUMED)</li>
+        </ul>
+      </div>
+      <div class="vcard">
+        <h3>Developability</h3>
+        <ul>
+          <li>Solubility, stability, aggregation propensity</li>
+          <li>Off-target / polyreactivity risk</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+<footer>
+  <div class="wrap">
+    <p><strong>Acknowledgements.</strong> Most notebooks were built by customizing existing Colabs, referenced in each file; papers and original sources are linked per method.</p>
+    <p style="margin-top:12px" class="muted">Contact: <a href="mailto:marco.orlando1991@live.it">marco.orlando1991@live.it</a> · <a href="mailto:marco.orlando@ung.si">marco.orlando@ung.si</a> — or open an issue on <a href="https://github.com/biochorl/Nanobody_de_novo_design">GitHub</a>.</p>
+    <p class="src" style="margin-top:14px">Hero image: Nova Gorica (<a href="https://www.independent.co.uk/travel/europe/slovenia/nova-gorica-slovenia-italy-capital-of-culture-b2712344.html">source</a>). Used at the University of Nova Gorica Nanobody Workshop, Sep 2025.</p>
+  </div>
+</footer>
+
+</body>
+</html>
