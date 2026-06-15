@@ -10,7 +10,7 @@
 <style>
 :root{
   --bg:#070b14; --bg2:#0c1424; --card:rgba(255,255,255,.045); --card-bd:rgba(255,255,255,.10);
-  --text:#eaf0fb; --muted:#9fb0c9; --accent:#5db4ff; --accent2:#7c5cff; --good:#46d6a0;
+  --text:#eaf0fb; --muted:#9fb0c9; --accent:#5db4ff; --accent2:#7c5cff; --good:#46d6a0; --key:#e0a64a;
   --radius:18px; --maxw:1080px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -24,7 +24,6 @@ a{color:var(--accent); text-decoration:none}
 h1,h2,h3{font-family:'Outfit',sans-serif; line-height:1.15; letter-spacing:-.02em}
 .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px}
 
-/* nav */
 nav{position:sticky; top:0; z-index:50; backdrop-filter:blur(12px);
   background:rgba(7,11,20,.62); border-bottom:1px solid var(--card-bd)}
 nav .wrap{display:flex; align-items:center; gap:18px; height:60px}
@@ -39,7 +38,8 @@ nav .links a:hover{color:var(--text)}
   background:url('Images/Background.png') center 35%/cover no-repeat; overflow:hidden}
 .hero::after{content:""; position:absolute; inset:0;
   background:linear-gradient(180deg, rgba(7,11,20,.55) 0%, rgba(7,11,20,.78) 60%, var(--bg) 100%)}
-.hero .wrap{position:relative; z-index:2; padding:90px 22px}
+.hero .wrap{position:relative; z-index:2; padding:90px 22px; display:flex; gap:30px; align-items:flex-end; flex-wrap:wrap}
+.hero-text{flex:1 1 520px}
 .eyebrow{display:inline-block; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
   font-size:.72rem; color:var(--accent); background:rgba(93,180,255,.12);
   border:1px solid rgba(93,180,255,.3); padding:6px 12px; border-radius:999px}
@@ -54,24 +54,35 @@ nav .links a:hover{color:var(--text)}
 .btn-primary:hover{transform:translateY(-2px); box-shadow:0 10px 30px rgba(93,140,255,.35)}
 .btn-ghost{background:var(--card); border-color:var(--card-bd); color:var(--text)}
 .btn-ghost:hover{border-color:var(--accent)}
+/* QR card */
+.qr{flex:0 0 auto; text-align:center; background:rgba(255,255,255,.95); border-radius:16px;
+  padding:14px 14px 10px; box-shadow:0 14px 40px rgba(0,0,0,.45)}
+.qr img{display:block; width:148px; height:148px; border-radius:6px}
+.qr span{display:block; margin-top:8px; font-size:.74rem; font-weight:700; color:#12203a}
+@media(max-width:680px){.hero .wrap{flex-direction:column; align-items:flex-start} .qr{align-self:center}}
 
-/* sections */
 section{padding:74px 0}
-.section-head{max-width:720px; margin-bottom:34px}
+.section-head{max-width:760px; margin-bottom:34px}
 .section-head .eyebrow{margin-bottom:14px}
 .section-head h2{font-size:clamp(1.6rem,4vw,2.4rem); font-weight:800}
 .section-head p{color:var(--muted); margin-top:10px; font-size:1.05rem}
 .lead{color:#cfdaee}
 
-/* inputs strip */
-.inputs{display:grid; grid-template-columns:1fr 1fr; gap:18px}
-@media(max-width:680px){.inputs{grid-template-columns:1fr}}
+/* generic hover on content boxes (like the Summer School site) */
+.input-card,.step,.vcard,.note{transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease}
+.input-card:hover,.step:hover,.vcard:hover,.note:hover{
+  transform:translateY(-5px); border-color:rgba(93,180,255,.55);
+  box-shadow:0 16px 44px rgba(8,14,30,.55), 0 0 0 1px rgba(93,180,255,.15)}
+
+.inputs{display:grid; grid-template-columns:1.15fr 1fr; gap:18px}
+@media(max-width:760px){.inputs{grid-template-columns:1fr}}
 .input-card{background:var(--card); border:1px solid var(--card-bd); border-radius:var(--radius); padding:22px}
 .input-card h3{font-size:1.1rem}
 .input-card .tag{font-size:.78rem; color:var(--good); font-weight:700}
 .input-card p{color:var(--muted); margin:8px 0 14px; font-size:.94rem}
+.rbd-fig img{width:100%; border-radius:12px; border:1px solid var(--card-bd); display:block}
+.rbd-fig figcaption{font-size:.78rem; color:var(--muted); margin-top:8px}
 
-/* steps */
 .steps{display:flex; flex-direction:column; gap:26px}
 .step{display:grid; grid-template-columns:64px 1fr; gap:22px; align-items:start;
   background:var(--card); border:1px solid var(--card-bd); border-radius:var(--radius);
@@ -89,28 +100,38 @@ section{padding:74px 0}
 .step p{color:var(--muted); font-size:.96rem}
 .step ul{color:var(--muted); font-size:.93rem; margin:10px 0 0 18px}
 .step ul li{margin:4px 0}
+.thumbs{display:flex; gap:12px; flex-wrap:wrap; margin-top:16px}
+.thumbs img{height:120px; border-radius:10px; border:1px solid var(--card-bd); object-fit:cover; background:#0b1424}
+@media(max-width:560px){.thumbs img{height:96px}}
 .step-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; align-items:center}
 .colab-badge img{height:30px; display:block}
 .dl{font-size:.84rem; font-weight:600; color:var(--muted); background:rgba(255,255,255,.05);
   border:1px solid var(--card-bd); padding:6px 11px; border-radius:8px}
 .dl:hover{color:var(--text); border-color:var(--accent)}
-.dl .fx{color:#e0a64a; font-size:.72rem; font-weight:700}
+.dl .fx{color:var(--key); font-size:.72rem; font-weight:700}
 @media(max-width:560px){.step{grid-template-columns:1fr} .step .num{margin-bottom:-8px}}
 
-/* mobile note */
+/* key (token) step */
+.step.key::before{background:linear-gradient(180deg,var(--key),#c77b22)}
+.step.key .num{color:var(--key); background:linear-gradient(135deg,rgba(224,166,74,.2),rgba(199,123,34,.15))}
+.step.key .engine{color:var(--key); background:rgba(224,166,74,.13); border-color:rgba(224,166,74,.34)}
+
 .note{display:flex; gap:16px; align-items:flex-start; background:linear-gradient(120deg,rgba(70,214,160,.10),rgba(93,180,255,.08));
   border:1px solid rgba(70,214,160,.28); border-radius:var(--radius); padding:22px}
 .note .ico{font-size:1.6rem}
 .note h3{font-size:1.15rem; margin-bottom:4px}
 .note p{color:var(--muted); font-size:.95rem}
 
-/* validation list */
 .grid2{display:grid; grid-template-columns:1fr 1fr; gap:18px}
 @media(max-width:680px){.grid2{grid-template-columns:1fr}}
 .vcard{background:var(--card); border:1px solid var(--card-bd); border-radius:var(--radius); padding:20px}
 .vcard h3{font-size:1.02rem; color:var(--accent)}
 .vcard ul{color:var(--muted); font-size:.9rem; margin:10px 0 0 18px}
 .vcard ul li{margin:4px 0}
+.boltz{margin-top:22px; background:linear-gradient(120deg,rgba(124,92,255,.12),rgba(93,180,255,.08));
+  border:1px solid rgba(124,92,255,.3); border-radius:var(--radius); padding:22px}
+.boltz h3{font-size:1.1rem; color:var(--accent2)}
+.boltz p{color:var(--muted); margin-top:8px; font-size:.96rem}
 
 footer{border-top:1px solid var(--card-bd); padding:46px 0; color:var(--muted); font-size:.92rem}
 footer a{font-weight:600}
@@ -135,12 +156,18 @@ footer a{font-weight:600}
 
 <header class="hero">
   <div class="wrap">
-    <span class="eyebrow">Google Colab · teaching workflow</span>
-    <h1><em>De Novo</em> Nanobody Design</h1>
-    <p>A guided, mobile-friendly pipeline to (re)design a nanobody against a target antigen — from epitope to a validated, full-atom complex — in four Google Colab notebooks. No local setup required.</p>
-    <div class="cta">
-      <a class="btn btn-primary" href="#workflow">Start the workflow →</a>
-      <a class="btn btn-ghost" href="./Misc/De-novo_design_intro.pdf">Intro to AI design (PDF)</a>
+    <div class="hero-text">
+      <span class="eyebrow">Google Colab · teaching workflow</span>
+      <h1><em>De Novo</em> Nanobody Design</h1>
+      <p>A guided, mobile-friendly pipeline to (re)design a nanobody against a target antigen — from epitope to cross-validation — in four Google Colab notebooks. No local setup required.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#workflow">Start the workflow →</a>
+        <a class="btn btn-ghost" href="./Misc/De-novo_design_intro.pdf">Intro to AI design (PDF)</a>
+      </div>
+    </div>
+    <div class="qr">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=6&data=https%3A%2F%2Fbiochorl.github.io%2FNanobody_de_novo_design%2F" alt="QR code to this site">
+      <span>📱 Scan to open on your phone</span>
     </div>
   </div>
 </header>
@@ -173,13 +200,17 @@ footer a{font-weight:600}
       <div class="input-card">
         <span class="tag">TARGET ANTIGEN</span>
         <h3>Protein of interest (PDB)</h3>
-        <p>Any structure you want the nanobody to bind. Example: SARS-CoV-2 RBD.</p>
-        <a class="dl" href="./Example_input/7z1b.pdb">⬇ 7z1b.pdb</a>
+        <p>Any structure you want the nanobody to bind. The example is the SARS-CoV-2 spike <strong>RBD</strong>:</p>
+        <figure class="rbd-fig">
+          <img src="Images/RBD_explained.png" alt="What is the RBD — the receptor-binding domain of the SARS-CoV-2 spike">
+          <figcaption>The Receptor-Binding Domain (RBD) is the part of the spike that grabs the human ACE2 receptor — an ideal target for nanobody binders. Concept after <a href="https://www.news-medical.net/news/20200608/The-receptor-binding-domain-of-the-SARS-CoV-2.aspx">news-medical.net</a>.</figcaption>
+        </figure>
+        <p style="margin-top:14px"><a class="dl" href="./Example_input/7z1b.pdb">⬇ 7z1b.pdb</a></p>
       </div>
       <div class="input-card">
         <span class="tag">NANOBODY SCAFFOLD</span>
         <h3>Starting nanobody (PDB)</h3>
-        <p>A pre-selected VHH framework used as the starting point for the redesign.</p>
+        <p>A pre-selected VHH framework used as the starting point for the redesign of its CDR loops.</p>
         <a class="dl" href="./Example_input/nanobody_scaffold.pdb">⬇ nanobody_scaffold.pdb</a>
       </div>
     </div>
@@ -205,9 +236,13 @@ footer a{font-weight:600}
             <li>DiscoTope-3.0 epitope hotspots → 0-based indices for IgGM</li>
             <li>Builds <code>IgGM_input.fasta</code> (CDRs = <code>X</code>) and <code>antigen_A.pdb</code></li>
           </ul>
+          <div class="thumbs">
+            <img src="Images/Image_target_patches_detection.png" alt="Predicting target antigen epitope patches">
+            <img src="Images/Image_CDRs_detection.png" alt="Identifying nanobody CDRs">
+          </div>
           <div class="step-actions">
             <a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/1_Preparation_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
-            <a class="dl" href="./Example_output/Step_1_annotations.txt">⬇ annotations</a>
+            <a class="dl" href="./Example_output/Step_1_annotations.txt">⬇ epitope/CDR annotations</a>
             <a class="dl" href="./Example_output/IgGM_input.fasta">⬇ IgGM_input.fasta <span class="fx">facsimile</span></a>
           </div>
         </div>
@@ -223,6 +258,10 @@ footer a{font-weight:600}
             <li>Optional random sampling of CDR3 length per design</li>
             <li>Exports <code>cdrs_annotation.json</code> with the exact CDR mask of each design</li>
           </ul>
+          <div class="thumbs">
+            <img src="Images/RFDiffusion_sample_image.gif" alt="Generative co-design of sequence and structure">
+            <img src="Images/pippack_architecture.png" alt="Side-chain repacking with PIPPack">
+          </div>
           <div class="step-actions">
             <a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/2_IgGM_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
             <a class="dl" href="./Example_output/Nanobody_Design_0.pdb">⬇ refined complex <span class="fx">facsimile</span></a>
@@ -236,11 +275,29 @@ footer a{font-weight:600}
         <div>
           <h3>CDR sequence optimization (in complex context)</h3>
           <span class="engine">AntiFold</span>
-          <p>Re-design the CDR sequences with a CDR-specialized inverse-folding model, with the antigen frozen as structural context. Uses the per-design CDR mask, so only the variable-length CDRs are touched.</p>
+          <p>Re-design the CDR sequences with a CDR-specialized inverse-folding model, with the antigen frozen as structural context. Uses the per-design <code>cdrs_annotation.json</code> CDR mask, so only the variable-length CDRs are touched.</p>
+          <div class="thumbs">
+            <img src="Images/AntiFold.jpeg" alt="CDR sequence optimization with AntiFold">
+          </div>
           <div class="step-actions">
             <a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/3_Antifold_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
             <a class="dl" href="./Example_output/design_3_score_0.4623.fasta">⬇ best design FASTA</a>
           </div>
+        </div>
+      </article>
+
+      <article class="step key">
+        <div class="num">🔑</div>
+        <div>
+          <h3>Before step 4 — get a free BioHub API token</h3>
+          <span class="engine">BioHub · one-time setup</span>
+          <p>Step 4 folds your designs with <strong>ESMFold2</strong> through the BioHub API, which needs a free API token. Do this once:</p>
+          <ul>
+            <li>Open <a href="https://biohub.ai/">biohub.ai</a> and sign in (free account).</li>
+            <li>Go to <strong>Developer Console → API keys</strong>: <a href="https://biohub.ai/developer-console/api-keys">biohub.ai/developer-console/api-keys</a>.</li>
+            <li>Click <strong>Create API key</strong>, copy it, and paste it into the <code>biohub_token</code> field of the step-4 notebook.</li>
+          </ul>
+          <p class="muted" style="margin-top:8px">⚠️ Keep the token private — don’t share a notebook with the token filled in.</p>
         </div>
       </article>
 
@@ -250,6 +307,9 @@ footer a{font-weight:600}
           <h3>Blind validation by structure prediction</h3>
           <span class="engine">ESMFold2 · BioHub</span>
           <p>Fold the redesigned complex sequence from scratch (no design coordinates as a guide), align it to the design for an RMSD, and report pLDDT / pTM / <strong>ipTM</strong> — the key interface confidence metric.</p>
+          <div class="thumbs">
+            <img src="Images/GapTrick.png" alt="Blind folding validation and interface assessment">
+          </div>
           <div class="step-actions">
             <a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/4_ESMFold_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
             <a class="dl" href="./Example_output/Nanobody_Design_0_esmfold2.cif">⬇ refolded .cif <span class="fx">facsimile</span></a>
@@ -267,37 +327,41 @@ footer a{font-weight:600}
     <div class="section-head">
       <span class="eyebrow">Beyond the tutorial</span>
       <h2>Screening & further validation</h2>
-      <p>For real campaigns, generate ≈1000 designs and filter hard — most will fail. Some directions:</p>
+      <p>This 4-step pipeline teaches the concepts. For a real campaign you would generate <strong>≈1000</strong> in-silico designs and filter them hard — expect ~95% to fail. Validation usually combines several orthogonal lines of evidence:</p>
     </div>
     <div class="grid2">
       <div class="vcard">
         <h3>Deep-learning interaction confidence</h3>
         <ul>
-          <li>AF2 / AF-Multimer / AF3 reprediction (no template)</li>
-          <li>Local Interaction Score, ipSAE</li>
+          <li>Re-predict the complex with AF2 / AF-Multimer / AF3 <em>without</em> templates and check consistency with the design</li>
+          <li>Flexibility-aware interface scores: Local Interaction Score (LIS), ipSAE, ipTM/pTM</li>
         </ul>
       </div>
       <div class="vcard">
         <h3>Empirical / physics scores</h3>
         <ul>
-          <li>Docking: HADDOCK, Rosetta-ddG, Fold-X</li>
-          <li>Interface geometry: dG/dSASA, packstat, unsatisfied H-bonds</li>
+          <li>Protein–protein docking: HADDOCK, Rosetta-ddG, Fold-X</li>
+          <li>Interface geometry: dG/dSASA, packstat, buried unsatisfied H-bonds</li>
         </ul>
       </div>
       <div class="vcard">
         <h3>Physics-based assessment</h3>
         <ul>
-          <li>MD simulations (&gt;100 ns) for stability</li>
-          <li>Enhanced sampling (metadynamics / PLUMED)</li>
+          <li>Molecular dynamics (&gt;100 ns) for complex stability (GROMACS, AMBER)</li>
+          <li>Enhanced sampling for the binding free-energy landscape (metadynamics / PLUMED)</li>
         </ul>
       </div>
       <div class="vcard">
         <h3>Developability</h3>
         <ul>
-          <li>Solubility, stability, aggregation propensity</li>
-          <li>Off-target / polyreactivity risk</li>
+          <li>Solubility, thermostability, aggregation propensity</li>
+          <li>Off-target / polyreactivity risk — compare against the parent scaffold</li>
         </ul>
       </div>
+    </div>
+    <div class="boltz">
+      <h3>🚀 The field is getting much easier</h3>
+      <p>Generative protein design is becoming far more accessible, increasingly through ready-made web interfaces that hide all the infrastructure. A good example is <strong>BoltzGen</strong>, usable directly through the <a href="https://lab.boltz.bio/login">BoltzLab platform</a> — we will go through it quickly to show how easy it now is to design a binder from a browser.</p>
     </div>
   </div>
 </section>

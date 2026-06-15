@@ -153,6 +153,8 @@ These steps may use one or more of the following (the list of options for each a
     *   Aggregation propensity
     *   Propension for off-target antigenic interactions
 
+> 🚀 **A note on accessibility.** Generative protein design is becoming dramatically more accessible — increasingly through ready-made web interfaces that hide all the infrastructure shown in these notebooks. A good example is **BoltzGen**, usable directly through the **[BoltzLab platform](https://lab.boltz.bio/login)**: we will go through it quickly during the workshop to show how easy it now is to design a binder straight from a browser.
+
 ---
 ## Acknowledgements
 
