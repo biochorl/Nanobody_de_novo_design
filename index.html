@@ -104,6 +104,8 @@ section{padding:74px 0}
 .thumbs{display:flex; gap:12px; flex-wrap:wrap; margin-top:16px}
 .thumbs img{height:255px; border-radius:12px; border:1px solid var(--card-bd); object-fit:cover; background:#0b1424}
 .thumbs.lg img{height:345px}
+.thumbs img.pippack{object-fit:contain; background:#0e1626; padding:6px}
+@media(max-width:560px){.thumbs img.pippack{height:auto; max-height:none; width:100%}}
 @media(max-width:560px){
   .thumbs{flex-direction:column; gap:10px}
   .thumbs img, .thumbs.lg img{height:auto; width:100%; max-height:340px; object-fit:contain}
@@ -220,13 +222,25 @@ footer a{font-weight:600}
         <div>
           <h3>Target &amp; nanobody scaffold</h3>
           <span class="engine">Inputs · two PDB structures</span>
-          <p>You only need two structures to start: the <strong>target antigen</strong> to bind (example: SARS-CoV-2 spike <strong>RBD</strong>) and a <strong>nanobody scaffold</strong> whose CDR loops will be redesigned.</p>
-          <div class="thumbs lg">
-            <img src="Images/RBD.png" alt="What is the RBD — the receptor-binding domain of the SARS-CoV-2 spike">
+          <p>You only need two structures to start, shown below.</p>
+          <div class="inputs" style="margin-top:14px">
+            <div class="input-card">
+              <span class="tag">TARGET ANTIGEN</span>
+              <h3>Protein of interest (PDB)</h3>
+              <p>Any structure you want the nanobody to bind. The example is the SARS-CoV-2 spike <strong>RBD</strong>:</p>
+              <figure class="rbd-fig">
+                <img src="Images/RBD.png" alt="What is the RBD — the receptor-binding domain of the SARS-CoV-2 spike">
+                <figcaption>The RBD is the part of the spike that grabs the human ACE2 receptor — an ideal target for nanobody binders. Concept after <a href="https://www.news-medical.net/news/20200608/The-receptor-binding-domain-of-the-SARS-CoV-2.aspx">news-medical.net</a>.</figcaption>
+              </figure>
+              <p style="margin-top:12px"><a class="dl" href="./Intermediate_inputs/7z1b.pdb">⬇ 7z1b.pdb</a></p>
+            </div>
+            <div class="input-card">
+              <span class="tag">NANOBODY SCAFFOLD</span>
+              <h3>Starting nanobody (PDB)</h3>
+              <p>A pre-selected VHH framework used as the starting point for the redesign of its CDR loops.</p>
+              <a class="dl" href="./Intermediate_inputs/nanobody_scaffold.pdb">⬇ nanobody_scaffold.pdb</a>
+            </div>
           </div>
-          <p class="src" style="margin-top:6px">The RBD is the part of the spike that grabs the human ACE2 receptor — an ideal target for nanobody binders. Concept after <a href="https://www.news-medical.net/news/20200608/The-receptor-binding-domain-of-the-SARS-CoV-2.aspx">news-medical.net</a>.</p>
-          <div class="outputs-box"><span class="lbl">📥 Inputs</span><a class="dl" href="./Intermediate_inputs/7z1b.pdb">⬇ 7z1b.pdb (target)</a>
-            <a class="dl" href="./Intermediate_inputs/nanobody_scaffold.pdb">⬇ nanobody_scaffold.pdb</a></div>
         </div>
       </article>
 
@@ -254,7 +268,7 @@ footer a{font-weight:600}
           <p>IgGM co-designs the sequence <em>and</em> structure of the CDRs against the antigen, then PIPPack repacks the side chains in the antigen context and makes the full-atom model.</p>
           <div class="thumbs">
             <img src="Images/RFDiffusion_sample_image.gif" alt="Generative co-design of sequence and structure">
-            <img src="Images/pippack_architecture.png" alt="Side-chain repacking with PIPPack">
+            <img class="pippack" src="Images/pippack_architecture.png" alt="Side-chain repacking with PIPPack">
           </div>
           <div class="step-actions"><a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/2_IgGM_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></div>
           <div class="outputs-box"><span class="lbl">📤 Outputs</span><a class="dl" href="./Intermediate_inputs/Refined_designs.zip">⬇ Refined_designs.zip</a></div>
@@ -295,7 +309,7 @@ footer a{font-weight:600}
         <div>
           <h3>Blind validation by structure prediction</h3>
           <span class="engine">ESMFold2 · BioHub</span>
-          <p>Fold the redesigned complex sequence from scratch (no design coordinates as a guide), align it to the design for a comparison, while reporting basic confidence metrics.</p>
+          <p>Refold the designed nanobodies in complex with the target (no template), align them with the structure of the designs, and report basic confidence metrics.</p>
           <div class="thumbs lg">
             <img src="Images/Refolding.jpeg" alt="Designed model (green) vs ESMFold refolded model (blue), aligned on the antigen">
           </div>
@@ -355,7 +369,7 @@ footer a{font-weight:600}
 <div class="divider"></div>
 <footer>
   <div class="wrap">
-    <p class="src">Hero image: Nova Gorica (<a href="https://www.independent.co.uk/travel/europe/slovenia/nova-gorica-slovenia-italy-capital-of-culture-b2712344.html">source</a>). Used at the University of Nova Gorica Nanobody Workshop, Sep 2025.</p>
+    <p class="src">Hero image: Nova Gorica (<a href="https://www.independent.co.uk/travel/europe/slovenia/nova-gorica-slovenia-italy-capital-of-culture-b2712344.html">source</a>).</p>
   </div>
 </footer>
 
