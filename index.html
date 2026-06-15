@@ -101,9 +101,12 @@ section{padding:74px 0}
 .step ul{color:var(--muted); font-size:.93rem; margin:10px 0 0 18px}
 .step ul li{margin:4px 0}
 .thumbs{display:flex; gap:12px; flex-wrap:wrap; margin-top:16px}
-.thumbs img{height:120px; border-radius:10px; border:1px solid var(--card-bd); object-fit:cover; background:#0b1424}
-@media(max-width:560px){.thumbs img{height:96px}}
+.thumbs img{height:190px; border-radius:12px; border:1px solid var(--card-bd); object-fit:cover; background:#0b1424}
+@media(max-width:560px){.thumbs img{height:150px}}
 .step-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; align-items:center}
+.outputs-box{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:12px;
+  background:rgba(70,214,160,.07); border:1px solid rgba(70,214,160,.3); border-radius:12px; padding:10px 12px}
+.outputs-box .lbl{font-size:.72rem; font-weight:800; letter-spacing:.05em; color:var(--good); text-transform:uppercase}
 .colab-badge img{height:30px; display:block}
 .dl{font-size:.84rem; font-weight:600; color:var(--muted); background:rgba(255,255,255,.05);
   border:1px solid var(--card-bd); padding:6px 11px; border-radius:8px}
@@ -240,11 +243,9 @@ footer a{font-weight:600}
             <img src="Images/Image_target_patches_detection.png" alt="Predicting target antigen epitope patches">
             <img src="Images/Image_CDRs_detection.png" alt="Identifying nanobody CDRs">
           </div>
-          <div class="step-actions">
-            <a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/1_Preparation_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
-            <a class="dl" href="./Intermediate_inputs/Step_1_annotations.txt">⬇ epitope/CDR annotations</a>
-            <a class="dl" href="./Intermediate_inputs/IgGM_input.fasta">⬇ IgGM_input.fasta</a>
-          </div>
+          <div class="step-actions"><a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/1_Preparation_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></div>
+          <div class="outputs-box"><span class="lbl">📤 Outputs</span><a class="dl" href="./Intermediate_inputs/Step_1_annotations.txt">⬇ epitope/CDR annotations</a>
+            <a class="dl" href="./Intermediate_inputs/IgGM_input.fasta">⬇ IgGM_input.fasta</a></div>
         </div>
       </article>
 
@@ -262,11 +263,8 @@ footer a{font-weight:600}
             <img src="Images/RFDiffusion_sample_image.gif" alt="Generative co-design of sequence and structure">
             <img src="Images/pippack_architecture.png" alt="Side-chain repacking with PIPPack">
           </div>
-          <div class="step-actions">
-            <a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/2_IgGM_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
-            <a class="dl" href="./Intermediate_inputs/PIPPack_outputs.zip">⬇ PIPPack_outputs.zip <span class="fx">facsimile</span></a>
-            <a class="dl" href="./Intermediate_inputs/cdrs_annotation.json">⬇ cdrs_annotation.json <span class="fx">facsimile</span></a>
-          </div>
+          <div class="step-actions"><a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/2_IgGM_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></div>
+          <div class="outputs-box"><span class="lbl">📤 Outputs</span><a class="dl" href="./Intermediate_inputs/Refined_designs.zip">⬇ Refined_designs.zip</a></div>
         </div>
       </article>
 
@@ -279,10 +277,8 @@ footer a{font-weight:600}
           <div class="thumbs">
             <img src="Images/AntiFold.jpeg" alt="CDR sequence optimization with AntiFold">
           </div>
-          <div class="step-actions">
-            <a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/3_Antifold_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
-            <a class="dl" href="./Intermediate_inputs/AntiFold_Best_Designs.zip">⬇ AntiFold_Best_Designs.zip <span class="fx">facsimile</span></a>
-          </div>
+          <div class="step-actions"><a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/3_Antifold_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></div>
+          <div class="outputs-box"><span class="lbl">📤 Outputs</span><a class="dl" href="./Intermediate_inputs/AntiFold_Best_Designs.zip">⬇ AntiFold_Best_Designs.zip</a></div>
         </div>
       </article>
 
@@ -310,11 +306,9 @@ footer a{font-weight:600}
           <div class="thumbs">
             <img src="Images/GapTrick.png" alt="Blind folding validation and interface assessment">
           </div>
-          <div class="step-actions">
-            <a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/4_ESMFold_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
-            <a class="dl" href="./Example_output/Nanobody_Design_0_esmfold2.cif">⬇ refolded .cif <span class="fx">facsimile</span></a>
-            <a class="dl" href="./Example_output/Nanobody_Design_0_metrics.json">⬇ metrics.json <span class="fx">facsimile</span></a>
-          </div>
+          <div class="step-actions"><a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/4_ESMFold_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></div>
+          <div class="outputs-box"><span class="lbl">📤 Outputs</span><a class="dl" href="./Example_output/Nanobody_Design_0_esmfold2.cif">⬇ refolded .cif <span class="fx">facsimile</span></a>
+            <a class="dl" href="./Example_output/Nanobody_Design_0_metrics.json">⬇ metrics.json <span class="fx">facsimile</span></a></div>
         </div>
       </article>
 

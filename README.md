@@ -90,8 +90,7 @@ This 4-step pipeline replaces the previous 6-step one (RFantibody → ProteinMPN
     *   **PIPPack** then repacks the side chains of the new CDRs *in the context of the antigen*, and the notebook exports a `cdrs_annotation.json` carrying the exact 0-based CDR mask of every design for the next step.
 *   **Colab Notebook:** [![2_IgGM_colab.ipynb](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/2_IgGM_colab.ipynb)
 *   **Example output:** the refined full-atom nanobody–antigen complex(es) and the CDR mask used downstream.
-    *   **Refined design PDB (facsimile):** [Nanobody_Design_0.pdb](./Example_output/Nanobody_Design_0.pdb)
-    *   **CDR annotation (facsimile):** [cdrs_annotation.json](./Example_output/cdrs_annotation.json)
+    *   **Refined designs (PIPPack) + CDR annotation:** [Refined_designs.zip](./Intermediate_inputs/Refined_designs.zip)
 ---
 ### 3. CDR sequence optimization in complex context (AntiFold)
 
@@ -111,7 +110,7 @@ This 4-step pipeline replaces the previous 6-step one (RFantibody → ProteinMPN
 *   **Purpose:** To re-design the **CDR sequences** of the IgGM nanobody with a CDR-specialized model, *in the context of the full refined complex* (the antigen is frozen as structural context). The notebook reads the per-design `cdrs_annotation.json`, so it masks **only** the variable-length CDR residues — no static-FASTA misalignment.
 *   **Colab Notebook:** [![3_Antifold_colab.ipynb](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/3_Antifold_colab.ipynb)
 *   **Example output:** the top redesigned nanobody sequence (lower score is better here), packaged with the complex PDBs.
-    *   **Best design FASTA:** [design_3_score_0.4623.fasta](./Example_output/design_3_score_0.4623.fasta)
+    *   **Best design FASTA:** [AntiFold_Best_Designs.zip](./Intermediate_inputs/AntiFold_Best_Designs.zip)
 ---
 ### 4. Blind validation by structure prediction (ESMFold2)
 

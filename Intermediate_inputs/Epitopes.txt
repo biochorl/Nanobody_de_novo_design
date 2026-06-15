@@ -1,0 +1,7 @@
+# values below are 0-based positional indices into the antigen sequence (IgGM --epitope)
+epitope 1 (red): 70 72 169 172   # PDB res ids: 403 405 502 505
+epitope 2 (blue): 75   # PDB res ids: 408
+epitope 3 (green): 82 83 84 87 88 127   # PDB res ids: 415 416 417 420 421 460
+epitope 4 (orange): 116 117 120 122 123 124 125 140 142 143 144 151 152 153 154 156 157 159 160 161 163   # PDB res ids: 449 450 453 455 456 457 458 473 475 476 477 484 485 486 487 489 490 492 493 494 496
+epitope 5 (purple): 137   # PDB res ids: 470
+epitope 6 (yellow): 167   # PDB res ids: 500
