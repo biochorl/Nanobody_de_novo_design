@@ -125,11 +125,9 @@ This 4-step pipeline replaces the previous 6-step one (RFantibody → ProteinMPN
 </table>
 
 *   **Tool:** [ESMFold2](https://www.biohub.ai/models/esmfold2) via the BioHub API
-*   **Purpose:** An independent, orthogonal check. ESMFold2 folds the **entire AntiFold-redesigned complex sequence *ab initio*** (purely from sequence, *without* using the PIPPack coordinates as a starting guess). The predicted structure is rigidly aligned to the design to compute the RMSD, and the notebook reports the **pLDDT, pTM and ipTM** confidence metrics — ipTM being the key metric for the nanobody–antigen interface.
+*   **Purpose:** An independent, orthogonal check. ESMFold2 folds the **entire AntiFold-redesigned complex sequence *ab initio*** (purely from sequence, *without* using the PIPPack coordinates as a starting guess). The predicted structure is rigidly **superposed on the antigen**, and the **RMSD is then measured on the nanobody** (how well the designed nanobody pose is reproduced); the notebook also reports the **pLDDT, pTM and ipTM** confidence metrics — ipTM being the key metric for the nanobody–antigen interface.
 *   **Colab Notebook:** [![4_ESMFold_colab.ipynb](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/4_ESMFold_colab.ipynb)
-*   **Example output:** the blindly folded complex and its confidence metrics.
-    *   **Repredicted structure (facsimile):** [Nanobody_Design_0_esmfold2.cif](./Example_output/Nanobody_Design_0_esmfold2.cif)
-    *   **Confidence metrics (facsimile):** [Nanobody_Design_0_metrics.json](./Example_output/Nanobody_Design_0_metrics.json)
+*   **Output:** produced **live when you run the notebook** (just open it and use the automatic inputs — nothing to download in advance): the blindly folded complex, its pLDDT/pTM/ipTM, and the antigen-aligned comparison models.
 
 ---
 ## Screening and Further Validation of *de novo* designed nanobody binders
