@@ -105,6 +105,8 @@ section{padding:74px 0}
 @media(max-width:560px){.thumbs img{height:200px}}
 .thumbs.lg img{height:345px}
 @media(max-width:560px){.thumbs.lg img{height:250px}}
+.legend{display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:10px; font-size:.88rem; color:var(--text); font-weight:600}
+.legend .dot{display:inline-block; width:13px; height:13px; border-radius:50%; margin-right:6px; vertical-align:middle}
 .step-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; align-items:center}
 .outputs-box{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:12px;
   background:rgba(70,214,160,.07); border:1px solid rgba(70,214,160,.3); border-radius:12px; padding:10px 12px}
@@ -182,7 +184,7 @@ footer a{font-weight:600}
     <div class="section-head">
       <span class="eyebrow">About</span>
       <h2>From a target structure to a designed binder</h2>
-      <p class="lead">This material was used during the <strong>Nanobody Workshop (22–26 Sep 2025)</strong> at the University of Nova Gorica. It is built for teaching and demonstration on free Colab GPUs — adequate to learn the concepts, not to scale a production screening.</p>
+      <p class="lead">This material was built for teaching and demonstration on free Colab GPUs — adequate to learn the concepts, not to scale a production screening.</p>
     </div>
     <div class="note">
       <div class="ico">📱</div>
@@ -227,7 +229,7 @@ footer a{font-weight:600}
     <div class="section-head">
       <span class="eyebrow">The pipeline</span>
       <h2>Four steps, four notebooks</h2>
-      <p>Run them in order. Each opens in Google Colab and produces the inputs for the next.</p>
+      <p>Run each step through Google Colab. The output is the input for the next.</p>
     </div>
     <div class="steps">
 
@@ -306,8 +308,9 @@ footer a{font-weight:600}
           <span class="engine">ESMFold2 · BioHub</span>
           <p>Fold the redesigned complex sequence from scratch (no design coordinates as a guide), align it to the design for a comparison, while reporting basic confidence metrics.</p>
           <div class="thumbs lg">
-            <img src="Images/GapTrick.png" alt="Blind folding validation and interface assessment">
+            <img src="Images/Refolding.jpeg" alt="Designed model (green) vs ESMFold refolded model (blue), aligned on the antigen">
           </div>
+          <div class="legend"><span><span class="dot" style="background:#3ad17f"></span>Design</span><span><span class="dot" style="background:#5db4ff"></span>Refolded</span></div>
           <div class="step-actions"><a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/4_ESMFold_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></div>
         </div>
       </article>
