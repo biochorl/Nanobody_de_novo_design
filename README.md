@@ -27,16 +27,16 @@ The workflow starts from the 3D structure of two input PDBs — one of the **tar
 
 This 4-step pipeline replaces the previous 6-step one (RFantibody → ProteinMPNN → PIPPack → AntiFold → gapTrick). The old notebooks are kept in [`backup_old_pipeline/`](./backup_old_pipeline).
 
-**Note on File Access:** The links to files in this README (like [7z1b.pdb](./Example_input/7z1b.pdb)) are relative paths. If you click on them in a browser while logged into GitHub with access to this repository, you will see the file's content. To use the file, you will need to manually click the "Download raw file" <img src="Images/Download_symbol.png" alt="Download button" width="200"/> top-right button on the file viewer page.
+**Note on File Access:** The links to files in this README (like [7z1b.pdb](./Intermediate_inputs/7z1b.pdb)) are relative paths. If you click on them in a browser while logged into GitHub with access to this repository, you will see the file's content. To use the file, you will need to manually click the "Download raw file" <img src="Images/Download_symbol.png" alt="Download button" width="200"/> top-right button on the file viewer page.
 
 > 📱 **On a phone / no laptop?** Every notebook has a **"Mobile mode"** switch at the top: turn it on and the required input files are downloaded automatically from this repository, so you can run the whole workflow from Google Colab without ever touching a local file system.
 
 ## Target and nanobody scaffold files (initial inputs)
 
 *   **Target:** An arbitrary protein structure (in PDB format) of your choice.
-    *   **Example Target (SARS-CoV-2 RBD):** [7z1b.pdb](./Example_input/7z1b.pdb)
+    *   **Example Target (SARS-CoV-2 RBD):** [7z1b.pdb](./Intermediate_inputs/7z1b.pdb)
 *   **Scaffold:** A pre-selected nanobody structure to serve as the starting point for the (re)design.
-    *   **Example nanobody scaffold:** [nanobody_scaffold.pdb](./Example_input/nanobody_scaffold.pdb)
+    *   **Example nanobody scaffold:** [nanobody_scaffold.pdb](./Intermediate_inputs/nanobody_scaffold.pdb)
 
 ---
 ### 1. Candidate epitope prediction & nanobody CDR identification
@@ -62,9 +62,9 @@ This 4-step pipeline replaces the previous 6-step one (RFantibody → ProteinMPN
     *   It identifies and masks the **CDRs** of the nanobody scaffold, building the `IgGM_input.fasta` (nanobody framework fixed, CDRs marked as `X`) and the single-chain `antigen_A.pdb`.
 *   **Colab Notebook:** [![1_Preparation_colab.ipynb](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/1_Preparation_colab.ipynb)
 *   **Example output:** epitope/CDR annotations plus the IgGM-ready inputs.
-    *   **Annotation file:** [Step_1_annotations.txt](./Example_output/Step_1_annotations.txt)
-    *   **IgGM input FASTA (facsimile):** [IgGM_input.fasta](./Example_output/IgGM_input.fasta)
-    *   **Single-chain antigen PDB (facsimile):** [antigen_A.pdb](./Example_output/antigen_A.pdb)
+    *   **Annotation file:** [Step_1_annotations.txt](./Intermediate_inputs/Step_1_annotations.txt)
+    *   **IgGM input FASTA:** [IgGM_input.fasta](./Intermediate_inputs/IgGM_input.fasta)
+    *   **Single-chain antigen PDB:** [antigen_A.pdb](./Intermediate_inputs/antigen_A.pdb)
 ---
 ### 2. *De novo* CDR design & side-chain refinement (IgGM + PIPPack)
 
