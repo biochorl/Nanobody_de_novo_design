@@ -6,40 +6,48 @@
 
 > 🌐 **Interactive website:** [biochorl.github.io/Nanobody_de_novo_design](https://biochorl.github.io/Nanobody_de_novo_design/) — the same workflow with a guided, mobile-friendly flow and one-click "Open in Colab" buttons.
 
-This repository contains the computational workflow for the *de novo* (re)design of a nanobody to a specific target protein of interest.
-The pipeline is developed to use Google Colab resources and is adequate for people with little knowledge of protein *de novo* design tools and limited structural biology background.
-It is made for demonstration and teaching, while being **not** adequate to scale for a production-level *in silico* screening.
+This material was built for teaching and demonstration on free Google Colab GPUs — adequate to learn the concepts of *de novo* nanobody (re)design, **not** to scale a production-level *in silico* screening. It assumes little knowledge of protein design tools and limited structural biology background.
 
-This material has been used during the **Nanobody Workshop (22-26 Sep 2025)** at the **University of Nova Gorica**, Rozna Dolina campus.
-*   **Event Link:** [https://indico.ijs.si/event/2966/](https://indico.ijs.si/event/2966/)
-*   A brief introduction on AI-assisted protein design is available at this [link](./Misc/De-novo_design_intro.pdf)
+A brief introduction on AI-assisted protein design is available at this [link](./Misc/De-novo_design_intro.pdf).
 
 ## Overview
 
-The workflow starts from the 3D structure of two input PDBs — one of the **target** antigen and one of the **scaffold nanobody** — and produces, in **four Google Colab notebooks**, a full-atom *de novo* nanobody–antigen complex with an orthogonal confidence check:
+Starting from just two PDB structures — a **target antigen** and a **nanobody scaffold** — the workflow produces a full-atom *de novo* nanobody–antigen complex with an orthogonal confidence check, in **five steps** (four Google Colab notebooks):
 
-| # | Notebook | What it does | Engine |
-|---|----------|--------------|--------|
-| 1 | **Preparation** | Define the epitope on the antigen and mark the nanobody CDRs to redesign | DiscoTope-3.0 + Nanocdr-X |
-| 2 | **IgGM Design & PIPPack** | Co-design CDR sequence + structure against the antigen, then repack side chains | IgGM + PIPPack |
-| 3 | **AntiFold Redesign** | Optimize the CDR sequences in the context of the complex | AntiFold |
-| 4 | **ESMFold Validation** | Blindly re-fold the designed sequence and align it to the design | ESMFold2 (BioHub) |
+| Step | Stage | Tool |
+|---|---|---|
+| 1 | **Target & nanobody scaffold** (inputs) | two PDB structures |
+| 2 | **Epitope prediction & CDR identification** | DiscoTope-3.0 + Nanocdr-X |
+| 3 | **De novo CDR design & side-chain refinement** | IgGM + PIPPack |
+| 4 | **CDR sequence optimization** (in complex context) | AntiFold |
+| 5 | **Blind validation by refolding** | ESMFold2 (BioHub) |
 
-This 4-step pipeline replaces the previous 6-step one (RFantibody → ProteinMPNN → PIPPack → AntiFold → gapTrick). The old notebooks are kept in [`backup_old_pipeline/`](./backup_old_pipeline).
-
-**Note on File Access:** The links to files in this README (like [7z1b.pdb](./Intermediate_inputs/7z1b.pdb)) are relative paths. If you click on them in a browser while logged into GitHub with access to this repository, you will see the file's content. To use the file, you will need to manually click the "Download raw file" <img src="Images/Download_symbol.png" alt="Download button" width="200"/> top-right button on the file viewer page.
+A one-time, free **BioHub API token** is needed before step 5 (see below). This 5-step pipeline replaces the previous 6-step one (RFantibody → ProteinMPNN → PIPPack → AntiFold → gapTrick); the old notebooks are kept in [`backup_old_pipeline/`](./backup_old_pipeline).
 
 > 📱 **On a phone / no laptop?** Every notebook has a **"Mobile mode"** switch at the top: turn it on and the required input files are downloaded automatically from this repository, so you can run the whole workflow from Google Colab without ever touching a local file system.
 
-## Target and nanobody scaffold files (initial inputs)
-
-*   **Target:** An arbitrary protein structure (in PDB format) of your choice.
-    *   **Example Target (SARS-CoV-2 RBD):** [7z1b.pdb](./Intermediate_inputs/7z1b.pdb)
-*   **Scaffold:** A pre-selected nanobody structure to serve as the starting point for the (re)design.
-    *   **Example nanobody scaffold:** [nanobody_scaffold.pdb](./Intermediate_inputs/nanobody_scaffold.pdb)
+**Note on File Access:** the links to files below (like [7z1b.pdb](./Intermediate_inputs/7z1b.pdb)) are relative paths. Clicking them on GitHub shows the file; to download it, use the **"Download raw file"** <img src="Images/Download_symbol.png" alt="Download button" width="180"/> button on the file viewer page.
 
 ---
-### 1. Candidate epitope prediction & nanobody CDR identification
+### 1. Target & nanobody scaffold (inputs)
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="Images/RBD.png" alt="What is the RBD — the receptor-binding domain of the SARS-CoV-2 spike" width="520"/>
+      <br>
+      <em>The RBD is the part of the spike that grabs the human ACE2 receptor — an ideal target for nanobody binders (concept after <a href="https://www.news-medical.net/news/20200608/The-receptor-binding-domain-of-the-SARS-CoV-2.aspx">news-medical.net</a>)</em>
+    </td>
+  </tr>
+</table>
+
+You only need two structures to start:
+
+*   **Target antigen** — any protein structure (PDB) you want the nanobody to bind. The example is the SARS-CoV-2 spike RBD: [7z1b.pdb](./Intermediate_inputs/7z1b.pdb)
+*   **Nanobody scaffold** — a pre-selected VHH framework whose CDR loops will be redesigned: [nanobody_scaffold.pdb](./Intermediate_inputs/nanobody_scaffold.pdb)
+
+---
+### 2. Epitope prediction & nanobody CDR identification
 
 <table>
   <tr>
@@ -57,21 +65,19 @@ This 4-step pipeline replaces the previous 6-step one (RFantibody → ProteinMPN
 </table>
 
 *   **Tools:** [DiscoTope-3.0](https://services.healthtech.dtu.dk/services/DiscoTope-3.0/) and [Nanocdr-X](https://github.com/lescailab/nanocdr-x)
-*   **Purpose:** This step prepares everything IgGM needs:
-    *   It predicts **B-cell epitope hotspots** on the surface of the target antigen with DiscoTope-3.0 and clusters them into patches you can target (output as **0-based positional indices** for IgGM).
-    *   It identifies and masks the **CDRs** of the nanobody scaffold, building the `IgGM_input.fasta` (nanobody framework fixed, CDRs marked as `X`) and the single-chain `antigen_A.pdb`.
+*   **Purpose:** Prepare everything IgGM needs: predict epitope hotspots on the antigen and mask the nanobody CDRs to redesign. It clusters the predicted epitope into patches (output as **0-based positional indices** for IgGM) and builds the `IgGM_input.fasta` (CDRs marked as `X`) and the single-chain `antigen_A.pdb`.
 *   **Colab Notebook:** [![1_Preparation_colab.ipynb](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/1_Preparation_colab.ipynb)
-*   **Example output:** epitope/CDR annotations plus the IgGM-ready inputs.
-    *   **Annotation file:** [Step_1_annotations.txt](./Intermediate_inputs/Step_1_annotations.txt)
+*   **Example output:**
+    *   **Epitope/CDR annotations:** [Step_1_annotations.txt](./Intermediate_inputs/Step_1_annotations.txt)
     *   **IgGM input FASTA:** [IgGM_input.fasta](./Intermediate_inputs/IgGM_input.fasta)
     *   **Single-chain antigen PDB:** [antigen_A.pdb](./Intermediate_inputs/antigen_A.pdb)
 ---
-### 2. *De novo* CDR design & side-chain refinement (IgGM + PIPPack)
+### 3. *De novo* CDR design & side-chain refinement (IgGM + PIPPack)
 
 <table>
   <tr>
     <td align="center">
-      <img src="Images/RFDiffusion_sample_image.gif" alt="Generative antibody design" width="430"/>
+      <img src="Images/RFDiffusion_sample_image.gif" alt="Generative co-design" width="430"/>
       <br>
       <em>Generative co-design of sequence and structure</em>
     </td>
@@ -84,15 +90,12 @@ This 4-step pipeline replaces the previous 6-step one (RFantibody → ProteinMPN
 </table>
 
 *   **Tools:** [IgGM](https://www.biorxiv.org/content/10.1101/2024.09.19.613838v2) and [PIPPack](https://onlinelibrary.wiley.com/doi/10.1002/prot.26705)
-*   **Purpose:** A single notebook that replaces the old **RFantibody + ProteinMPNN + PIPPack** sequence:
-    *   **IgGM** co-designs the **sequence and structure** of the nanobody CDRs against the antigen, producing a **full all-atom** nanobody–antigen complex (no glycine masking, side chains completed via PDBFixer).
-    *   You can optionally **sample a range of CDR3 lengths** — each design gets an independently sampled CDR3 length (typical nanobody range).
-    *   **PIPPack** then repacks the side chains of the new CDRs *in the context of the antigen*, and the notebook exports a `cdrs_annotation.json` carrying the exact 0-based CDR mask of every design for the next step.
+*   **Purpose:** IgGM co-designs the sequence and structure of the CDRs against the antigen, then PIPPack repacks the side chains in the antigen context and makes the full-atom model. This single notebook replaces the old **RFantibody + ProteinMPNN + PIPPack** sequence. You can optionally **sample a range of CDR3 lengths** (one length per design), and the notebook exports a `cdrs_annotation.json` carrying the exact CDR mask of every design for the next step.
 *   **Colab Notebook:** [![2_IgGM_colab.ipynb](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/2_IgGM_colab.ipynb)
-*   **Example output:** the refined full-atom nanobody–antigen complex(es) and the CDR mask used downstream.
+*   **Example output:** the refined full-atom complex(es) + the CDR mask.
     *   **Refined designs (PIPPack) + CDR annotation:** [Refined_designs.zip](./Intermediate_inputs/Refined_designs.zip)
 ---
-### 3. CDR sequence optimization in complex context (AntiFold)
+### 4. CDR sequence optimization in complex context (AntiFold)
 
 <table>
   <tr>
@@ -107,27 +110,38 @@ This 4-step pipeline replaces the previous 6-step one (RFantibody → ProteinMPN
 [image source](https://doi.org/10.1093/bioadv/vbae202)
 
 *   **Tool:** [AntiFold](https://academic.oup.com/bioinformaticsadvances/article/5/1/vbae202/8090019)
-*   **Purpose:** To re-design the **CDR sequences** of the IgGM nanobody with a CDR-specialized model, *in the context of the full refined complex* (the antigen is frozen as structural context). The notebook reads the per-design `cdrs_annotation.json`, so it masks **only** the variable-length CDR residues — no static-FASTA misalignment.
+*   **Purpose:** Re-design the CDR sequences with a CDR-specialized inverse-folding model, with the antigen frozen as structural context.
 *   **Colab Notebook:** [![3_Antifold_colab.ipynb](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/3_Antifold_colab.ipynb)
-*   **Example output:** the top redesigned nanobody sequence (lower score is better here), packaged with the complex PDBs.
-    *   **Best design FASTA:** [AntiFold_Best_Designs.zip](./Intermediate_inputs/AntiFold_Best_Designs.zip)
+*   **Example output:** the top redesigned sequences packaged with the complex PDBs.
+    *   **AntiFold best designs:** [AntiFold_Best_Designs.zip](./Intermediate_inputs/AntiFold_Best_Designs.zip)
 ---
-### 4. Blind validation by structure prediction (ESMFold2)
+### 🔑 Before step 5 — get a free BioHub API token
+
+Step 5 folds your designs with **ESMFold2** through the BioHub API, which needs a free token (done once):
+
+1.  Open [biohub.ai](https://biohub.ai/) and sign in (free account).
+2.  Go to **Developer Console → API keys**: [biohub.ai/developer-console/api-keys](https://biohub.ai/developer-console/api-keys).
+3.  Click **Create API key**, copy it, and paste it into the `biohub_token` field of the step-5 notebook.
+
+⚠️ Keep the token private — don't share a notebook with the token filled in.
+
+---
+### 5. Blind validation by refolding (ESMFold2)
 
 <table>
   <tr>
     <td align="center">
-      <img src="Images/GapTrick.png" alt="Blind folding validation" width="600"/>
+      <img src="Images/Refolding.jpeg" alt="Design (green) vs ESMFold refolded (blue), aligned on the antigen" width="600"/>
       <br>
-      <em>Folding the designed sequence from scratch and aligning it to the design</em>
+      <em>🟢 Design nanobody &nbsp;·&nbsp; 🔵 Refolded (ESMFold) nanobody, after antigen alignment</em>
     </td>
   </tr>
 </table>
 
 *   **Tool:** [ESMFold2](https://www.biohub.ai/models/esmfold2) via the BioHub API
-*   **Purpose:** An independent, orthogonal check. ESMFold2 folds the **entire AntiFold-redesigned complex sequence *ab initio*** (purely from sequence, *without* using the PIPPack coordinates as a starting guess). The predicted structure is rigidly **superposed on the antigen**, and the **RMSD is then measured on the nanobody** (how well the designed nanobody pose is reproduced); the notebook also reports the **pLDDT, pTM and ipTM** confidence metrics — ipTM being the key metric for the nanobody–antigen interface.
+*   **Purpose:** Refold the designed nanobodies in complex with the target (no template), align them with the structure of the designs, and report basic confidence metrics. The ESMFold model is rigidly **superposed on the antigen**, then the **RMSD is measured on the nanobody** (lower = closer to the design); the notebook also reports **pLDDT, pTM and ipTM** (ipTM being the key interface metric).
 *   **Colab Notebook:** [![4_ESMFold_colab.ipynb](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/4_ESMFold_colab.ipynb)
-*   **Output:** produced **live when you run the notebook** (just open it and use the automatic inputs — nothing to download in advance): the blindly folded complex, its pLDDT/pTM/ipTM, and the antigen-aligned comparison models.
+*   **Output:** produced **live when you run the notebook** with the automatic inputs — the blindly refolded complex, its confidence metrics, and the antigen-aligned comparison models.
 
 ---
 ## Screening and Further Validation of *de novo* designed nanobody binders
@@ -136,25 +150,23 @@ Further steps of validation are crucial for increasing the likelihood of success
 For a real campaign you would generate at least **>10,000** *in silico* designs (full-atom structures) and filter them hard — expect **>98%** of them to fail *in silico*! This is the reason why such methods require dedicated hardware more than deep knowledge of deep-learning methods. Moreover, the most limiting step is finding methods for improving the success rate after experimental validation. This is usually done by combining several orthogonal lines of evidence, despite the fact that no single or combined approach has been demonstrated to systematically improve the success rate on any application (the list below is not comprehensive, just some examples):
 
 *   **Interaction confidence from deep learning approaches**
-    *   Use AlphaFold2 (AF2), AlphaFold-Multimer or AF3 to repredict the complex without the use of templates and evaluate the models for consistency with the design structure and flexibility-sensitive confidence scores (e.g, [Local Interaction Score](https://github.com/flyark/AFM-LIS) or [ipSAE](https://doi.org/10.1101/2025.02.10.637595))
+    *   Re-predict the complex with AF2 / AF-Multimer / AF3 *without* templates and check consistency with the design, plus flexibility-sensitive scores (e.g. [Local Interaction Score](https://github.com/flyark/AFM-LIS) or [ipSAE](https://doi.org/10.1101/2025.02.10.637595))
 *   **Empirical-physics scores:**
     *   Protein-protein docking scores (e.g., HADDOCK, Rosetta-ddG, Fold-X)
-    *   Geometric scores using surface and non-covalent interactions features at interface (e.g., Rosetta interface analysis tools, dG/dSASA, packstat or n° unsaturated H-bonds)
-*   **Physics-based Assessment:**
-    *   Molecular Dynamics simulations (> 100 ns) to assess complex stability (e.g., RMSD metric using GROMACS, AMBER, etc...)
-    *   Enhanced sampling methods, to generate the conformational free-energy landscape (e.g., metadynamics with PLUMED or coarse-grained/all-atom hybrid simulations with Prody)
-*   **Developability Assessment (To be compared with the initial Nb scaffold if it is known it has a good developability):**
-    *   Solubility prediction
-    *   Stability Prediction
-    *   Aggregation propensity
-    *   Propension for off-target antigenic interactions
+    *   Interface geometry (e.g., Rosetta interface analysis, dG/dSASA, packstat, buried unsatisfied H-bonds)
+*   **Physics-based assessment:**
+    *   Molecular Dynamics simulations (> 100 ns) for complex stability (GROMACS, AMBER, …)
+    *   Enhanced sampling for the binding free-energy landscape (e.g., metadynamics with PLUMED)
+*   **Developability assessment** (compared with the parent scaffold if its developability is known):
+    *   Solubility, stability and aggregation propensity prediction
+    *   Off-target / polyreactivity risk
 
-> 🚀 **A note on accessibility.** Generative protein design is becoming dramatically more accessible — increasingly through ready-made web interfaces that hide all the infrastructure shown in these notebooks. A good example is **BoltzGen**, usable directly through the **[BoltzLab platform](https://lab.boltz.bio/login)**: we will go through it quickly during the workshop to show how easy it now is to design a binder straight from a browser.
+> 🚀 **A note on accessibility.** Generative protein design is becoming far more accessible, through ready-made web interfaces that hide all the preparation steps, in-silico validation and infrastructure shown in these notebooks. A good example is **BoltzGen**, usable directly through the **[BoltzLab platform](https://lab.boltz.bio/login)** — showing how easy it is now to design a binder straight from a browser.
 
 ---
 ## Acknowledgements
 
-Most of the Google colaboratories were developed by customizing other colabs, referenced in the corresponding file. I linked the paper or the original source describing all the different methods.
+Most of the Google colaboratories were developed by customizing other colabs, referenced in the corresponding file; the paper or original source of each method is linked above.
 
 ## Contact
 
