@@ -103,6 +103,8 @@ section{padding:74px 0}
 .thumbs{display:flex; gap:12px; flex-wrap:wrap; margin-top:16px}
 .thumbs img{height:255px; border-radius:12px; border:1px solid var(--card-bd); object-fit:cover; background:#0b1424}
 @media(max-width:560px){.thumbs img{height:200px}}
+.thumbs.lg img{height:345px}
+@media(max-width:560px){.thumbs.lg img{height:250px}}
 .step-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; align-items:center}
 .outputs-box{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:12px;
   background:rgba(70,214,160,.07); border:1px solid rgba(70,214,160,.3); border-radius:12px; padding:10px 12px}
@@ -273,8 +275,8 @@ footer a{font-weight:600}
         <div>
           <h3>CDR sequence optimization (in complex context)</h3>
           <span class="engine">AntiFold</span>
-          <p>Re-design the CDR sequences with a CDR-specialized inverse-folding model, with the antigen frozen as structural context. Uses the per-design <code>cdrs_annotation.json</code> CDR mask, so only the variable-length CDRs are touched.</p>
-          <div class="thumbs">
+          <p>Re-design the CDR sequences with a CDR-specialized inverse-folding model, with the antigen frozen as structural context.</p>
+          <div class="thumbs lg">
             <img src="Images/AntiFold.jpeg" alt="CDR sequence optimization with AntiFold">
           </div>
           <div class="step-actions"><a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/3_Antifold_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></div>
@@ -302,8 +304,8 @@ footer a{font-weight:600}
         <div>
           <h3>Blind validation by structure prediction</h3>
           <span class="engine">ESMFold2 · BioHub</span>
-          <p>Fold the redesigned complex sequence from scratch (no design coordinates as a guide), align it to the design for an RMSD, and report pLDDT / pTM / <strong>ipTM</strong> — the key interface confidence metric.</p>
-          <div class="thumbs">
+          <p>Fold the redesigned complex sequence from scratch (no design coordinates as a guide), align it to the design for a comparison, while reporting basic confidence metrics.</p>
+          <div class="thumbs lg">
             <img src="Images/GapTrick.png" alt="Blind folding validation and interface assessment">
           </div>
           <div class="step-actions"><a class="colab-badge" href="https://colab.research.google.com/github/biochorl/Nanobody_de_novo_design/blob/main/4_ESMFold_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></div>
