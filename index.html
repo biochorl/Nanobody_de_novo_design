@@ -238,11 +238,7 @@ footer a{font-weight:600}
         <div>
           <h3>Epitope prediction & CDR identification</h3>
           <span class="engine">DiscoTope-3.0 · Nanocdr-X</span>
-          <p>Prepare everything IgGM needs: predict B-cell epitope hotspots on the antigen and mask the nanobody CDRs to redesign.</p>
-          <ul>
-            <li>DiscoTope-3.0 epitope hotspots → 0-based indices for IgGM</li>
-            <li>Builds <code>IgGM_input.fasta</code> (CDRs = <code>X</code>) and <code>antigen_A.pdb</code></li>
-          </ul>
+          <p>Prepare everything IgGM needs: predict epitope hotspots on the antigen and mask the nanobody CDRs to redesign.</p>
           <div class="thumbs">
             <img src="Images/Image_target_patches_detection.png" alt="Predicting target antigen epitope patches">
             <img src="Images/Image_CDRs_detection.png" alt="Identifying nanobody CDRs">
@@ -258,11 +254,7 @@ footer a{font-weight:600}
         <div>
           <h3>De novo CDR design & side-chain refinement</h3>
           <span class="engine">IgGM · PIPPack</span>
-          <p>IgGM co-designs the sequence <em>and</em> structure of the CDRs against the antigen — a full all-atom complex — then PIPPack repacks the side chains in the antigen context. Replaces the old RFantibody + ProteinMPNN + PIPPack chain.</p>
-          <ul>
-            <li>Optional random sampling of CDR3 length per design</li>
-            <li>Exports <code>cdrs_annotation.json</code> with the exact CDR mask of each design</li>
-          </ul>
+          <p>IgGM co-designs the sequence <em>and</em> structure of the CDRs against the antigen, then PIPPack repacks the side chains in the antigen context and makes the full-atom model.</p>
           <div class="thumbs">
             <img src="Images/RFDiffusion_sample_image.gif" alt="Generative co-design of sequence and structure">
             <img src="Images/pippack_architecture.png" alt="Side-chain repacking with PIPPack">
