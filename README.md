@@ -8,7 +8,7 @@
 
 This material was built for teaching and demonstration on free Google Colab GPUs — adequate to learn the concepts of *de novo* nanobody (re)design, **not** to scale a production-level *in silico* screening. It assumes little knowledge of protein design tools and limited structural biology background.
 
-A brief introduction on AI-assisted protein design is available at this [link](./Misc/De-novo_design_intro.pdf).
+A brief introduction on AI-assisted protein design is available at this [link](./Misc/De_novo_nanobody_design_18-06-2026.pdf).
 
 ## Overview
 
